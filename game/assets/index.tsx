@@ -20,6 +20,7 @@ export const BG = 'bg';
 export const FULLSCREEN = 'fullscreen';
 export const LEFT_CHEVRON = 'left_chevron';
 export const CLICK = 'click';
+export const LOWER_BELT = 'lowerBelt';
 
 // Save all in game assets in the public folder
 export const assets: Array<Asset | SpritesheetAsset> = [
@@ -37,5 +38,14 @@ export const assets: Array<Asset | SpritesheetAsset> = [
     key: CLICK,
     src: 'assets/sounds/click.mp3',
     type: 'AUDIO',
+  },
+  {
+    key: LOWER_BELT,
+    src: 'assets/images/lowerBelt.png',
+    type: 'SPRITESHEET',
+    data: {
+      frameHeight: 775,
+      frameWidth: 4800,
+    }
   },
 ];

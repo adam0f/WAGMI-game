@@ -1,5 +1,5 @@
 import {
-  LEFT_CHEVRON, BG, CLICK
+  LEFT_CHEVRON, BG, CLICK, LOWER_BELT
 } from 'game/assets';
 import { AavegotchiGameObject } from 'types';
 import { getGameWidth, getGameHeight, getRelative } from '../helpers';
@@ -35,6 +35,21 @@ export class GameScene extends Phaser.Scene {
     this.back = this.sound.add(CLICK, { loop: false });
     this.createBackButton();
 
+    const lowerBelt = this.add.sprite(getGameWidth(this) * 0.5 , getGameHeight(this) * 0.75 + getGameHeight(this) * 0.1875, LOWER_BELT).setDisplaySize(getGameWidth(this), getGameHeight(this) * 0.25).setVisible(true).setDepth(0.25)
+    this.physics.add.existing(lowerBelt, true)
+
+    const floor = this.add.rectangle(0, getGameHeight(this) * 0.9).setDisplaySize(getGameWidth(this), 50).setOrigin(0, 0)
+    this.physics.add.existing(floor, true)
+
+    const leftWall = this.add.rectangle(-100, -getGameHeight(this) * 40, 0x000000).setDisplaySize(50, getGameHeight(this) * 50,).setOrigin(0, 0)
+    this.physics.add.existing(leftWall, true)
+
+    const rightWall = this.add.rectangle(getGameWidth(this), -getGameHeight(this) * 40, 0x000000).setDisplaySize(50, getGameHeight(this) * 50,).setOrigin(0, 0)
+    this.physics.add.existing(rightWall, true)
+
+    const ceiling  = this.add.rectangle(0, getGameHeight(this) * 0.25).setDisplaySize(getGameWidth(this), 50).setOrigin(0, 0)
+    this.physics.add.existing(ceiling, true)
+
     // Add a player sprite that can be moved around.
     this.player = new Player({
       scene: this,
@@ -42,6 +57,12 @@ export class GameScene extends Phaser.Scene {
       y: getGameHeight(this) / 2,
       key: this.selectedGotchi?.spritesheetKey || ''
     })
+
+    this.physics.add.collider(floor, this.player);
+    this.physics.add.collider(leftWall, this.player);
+    this.physics.add.collider(rightWall, this.player);
+    this.physics.add.collider(ceiling, this.player);
+
   }
 
   private createBackButton = () => {

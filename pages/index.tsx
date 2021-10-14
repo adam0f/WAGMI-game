@@ -47,26 +47,11 @@ const Home = () => {
   return (
     <Layout>
       <Panel>
-        <h1>Aavegotchi Moralis Next.js</h1>
-        <p>Get started by editing <b>pages/index.tsx</b>.</p>
-        <Grid>
-          <Card href="https://nextjs.org/docs/basic-features/pages" target="_blank">
-            <h3>Next.js Documentation</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </Card>
-          <Card href="https://docs.moralis.io/" target="_blank">
-            <h3>Moralis Documentation</h3>
-            <p>Learn about Moralis' suite of features for easy web3 integration.</p>
-          </Card>
-          <Card href="https://docs.aavegotchi.com/diamond-facets/aavegotchifacet.sol" target="_blank">
-            <h3>Aavegotchi Diamond</h3>
-            <p>Search the Aavegotchi dev wiki for the various contract methods.</p>
-          </Card>
-          <Card href="https://styled-components.com/" target="_blank">
-            <h3>Styled components</h3>
-            <p>Learn about the CSS-in-JS tool that bridges the gap between components and styling.</p>
-          </Card>
-        </Grid>
+      <h1>*DEMO* WAGMI Warriors Minigame</h1>
+        <p>This is the working page for the first aavegotchi guild collaboration game! This site will be re-deployed frequently as game mechanics are developed and community designs are implemented!  </p>
+        <p>Connect your wallet from the button in the top right, then select your gotchi. If you get a diamond error that won't clear, there may be issues with the sidviews on one of your gotchis. unequip from the aavegotchi side to fix temporarily. wearables with known issues are the pirate hook, pajama shirt and the princess hair. </p> 
+      <h2>Controls:</h2>
+        <p>move left = A or left arrow,   move right = D or right arrow,   move up = W or right arrow,  move down = S or down arrow</p>
       </Panel>
       <PlayButtonContainer>
         <Button
