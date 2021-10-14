@@ -32,18 +32,29 @@ export class GameScene extends Phaser.Scene {
     this.selectedGotchi = data.selectedGotchi;
   };
 
-  private fetchFood = () => {
+  private fetchFoodTop = () => {
     const foodType = 0 
     const foodSpeed = -1
 
-    this.loadBelt(foodType, foodSpeed)
+    this.loadBeltTop(foodType, foodSpeed)
   }
 
-  private loadBelt = (foodType: number, foodSpeed: number): void => {
+  private loadBeltTop = (foodType: number, foodSpeed: number): void => {
     const food: TopFood = this.topFoodLine?.get()
     food.activate(foodType, foodSpeed)  
   }
 
+  private fetchFoodBottom = () => {
+    const foodType = 0 
+    const foodSpeed = -1
+
+    this.loadBeltBottom(foodType, foodSpeed)
+  }
+
+  private loadBeltBottom = (foodType: number, foodSpeed: number): void => {
+    const food: BottomFood = this.bottomFoodLine?.get()
+    food.activate(foodType, foodSpeed)  
+  }
 
 
   public create(): void {
@@ -52,7 +63,7 @@ export class GameScene extends Phaser.Scene {
     this.back = this.sound.add(CLICK, { loop: false });
     this.createBackButton();
 
-    const lowerBelt = this.add.sprite(getGameWidth(this) * 0.5 , getGameHeight(this) * 0.75 + getGameHeight(this) * 0.1875, LOWER_BELT).setDisplaySize(getGameWidth(this), getGameHeight(this) * 0.25).setVisible(true).setDepth(0.25)
+    const lowerBelt = this.add.sprite(getGameWidth(this) * 0.5 , getGameHeight(this) * 0.82 + getGameHeight(this) * 0.1875, LOWER_BELT).setDisplaySize(getGameWidth(this) *1.5, getGameHeight(this) * 0.4).setVisible(true).setDepth(0.25)
     this.physics.add.existing(lowerBelt, true)
 
     const floor = this.add.rectangle(0, getGameHeight(this) * 0.9).setDisplaySize(getGameWidth(this), 50).setOrigin(0, 0)
@@ -74,18 +85,23 @@ export class GameScene extends Phaser.Scene {
     })
 
     this.time.addEvent({
-      delay: 1000,
-      callback: this.fetchFood,
+      delay: 1100,
+      callback: this.fetchFoodTop,
       callbackScope: true,
       loop: true
     })
 
- 
-
-
     this.bottomFoodLine = this.add.group({
-      maxSize: 30, 
+      maxSize: 300, 
       classType: BottomFood, 
+      runChildUpdate: true, 
+    })
+
+    this.time.addEvent({
+      delay: 750,
+      callback: this.fetchFoodBottom,
+      callbackScope: true,
+      loop: true
     })
 
 
@@ -95,7 +111,7 @@ export class GameScene extends Phaser.Scene {
       x: getGameWidth(this) / 2,
       y: getGameHeight(this) / 2,
       key: this.selectedGotchi?.spritesheetKey || ''
-    })
+    }).setDepth(0.125)
 
     this.physics.add.collider(floor, this.player);
     this.physics.add.collider(leftWall, this.player);
