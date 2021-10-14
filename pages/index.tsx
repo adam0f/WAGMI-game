@@ -49,7 +49,7 @@ const Home = () => {
       <Panel>
       <h1>*DEMO* WAGMI Warriors Minigame</h1>
         <p>This is the working page for the first aavegotchi guild collaboration game! This site will be re-deployed frequently as game mechanics are developed and community designs are implemented!  </p>
-        <p>Connect your wallet from the button in the top right, then select your gotchi. If you get a diamond error that won't clear, there may be issues with the sidviews on one of your gotchis. unequip from the aavegotchi side to fix temporarily. wearables with known issues are the pirate hook, pajama shirt and the princess hair. </p> 
+        <p>Connect your wallet from the button in the top right, then select your gotchi. If you get a diamond error that won't clear, there may be issues with the sidviews on one of your gotchis. unequip from the main aavegotchi website to fix temporarily. wearables with known issues are the pirate hook, pajama shirt and the princess hair. </p> 
       <h2>Controls:</h2>
         <p>move left = A or left arrow,   move right = D or right arrow,   move up = W or right arrow,  move down = S or down arrow</p>
       </Panel>
