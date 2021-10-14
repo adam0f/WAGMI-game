@@ -3,7 +3,8 @@ import {
 } from 'game/assets';
 import { AavegotchiGameObject } from 'types';
 import { getGameWidth, getGameHeight, getRelative } from '../helpers';
-import { Player } from 'game/objects';
+import { Player, TopFood, BottomFood } from 'game/objects';
+
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -17,6 +18,8 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 export class GameScene extends Phaser.Scene {
   private player?: Player;
   private selectedGotchi?: AavegotchiGameObject;
+  private topFoodLine?: Phaser.GameObjects.Group
+  private bottomFoodLine?: Phaser.GameObjects.Group
 
   // Sounds
   private back?: Phaser.Sound.BaseSound;
@@ -28,6 +31,20 @@ export class GameScene extends Phaser.Scene {
   init = (data: { selectedGotchi: AavegotchiGameObject }): void => {
     this.selectedGotchi = data.selectedGotchi;
   };
+
+  private fetchFood = () => {
+    const foodType = 0 
+    const foodSpeed = -1
+
+    this.loadBelt(foodType, foodSpeed)
+  }
+
+  private loadBelt = (foodType: number, foodSpeed: number): void => {
+    const food: TopFood = this.topFoodLine?.get()
+    food.activate(foodType, foodSpeed)  
+  }
+
+
 
   public create(): void {
     // Add layout
@@ -49,6 +66,28 @@ export class GameScene extends Phaser.Scene {
 
     const ceiling  = this.add.rectangle(0, getGameHeight(this) * 0.25).setDisplaySize(getGameWidth(this), 50).setOrigin(0, 0)
     this.physics.add.existing(ceiling, true)
+
+    this.topFoodLine = this.add.group({
+      maxSize: 500, 
+      classType: TopFood,
+      runChildUpdate: true, 
+    })
+
+    this.time.addEvent({
+      delay: 1000,
+      callback: this.fetchFood,
+      callbackScope: true,
+      loop: true
+    })
+
+ 
+
+
+    this.bottomFoodLine = this.add.group({
+      maxSize: 30, 
+      classType: BottomFood, 
+    })
+
 
     // Add a player sprite that can be moved around.
     this.player = new Player({

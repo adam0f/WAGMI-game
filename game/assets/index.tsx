@@ -1,3 +1,5 @@
+import { type } from "os";
+
 export interface Asset {
   key: string;
   src: string;
@@ -21,6 +23,7 @@ export const FULLSCREEN = 'fullscreen';
 export const LEFT_CHEVRON = 'left_chevron';
 export const CLICK = 'click';
 export const LOWER_BELT = 'lowerBelt';
+export const FOOD_DUMMY = 'dummyArt'
 
 // Save all in game assets in the public folder
 export const assets: Array<Asset | SpritesheetAsset> = [
@@ -48,4 +51,13 @@ export const assets: Array<Asset | SpritesheetAsset> = [
       frameWidth: 4800,
     }
   },
+  {
+    key: FOOD_DUMMY,
+    src: 'assets/images/art.png',
+    type: 'SPRITESHEET',
+    data: {
+     frameHeight: 320,
+      frameWidth: 290,
+    }
+  }
 ];
