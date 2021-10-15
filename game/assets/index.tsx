@@ -23,6 +23,8 @@ export const CLICK = 'click';
 export const LOWER_BELT = 'lowerBelt';
 export const FOOD_DUMMY = 'dummyArt'
 export const TRASH = 'trash'
+export const YELLOW_DUMMY = 'dummyYellow'
+export const RED_DUMMY = 'dummyRed'
 
 
 // Save all in game assets in the public folder
@@ -60,6 +62,24 @@ export const assets: Array<Asset | SpritesheetAsset> = [
       frameWidth: 290,
     }
   },
+  {
+    key: YELLOW_DUMMY,
+    src: 'assets/images/artYellow.png',
+    type: 'SPRITESHEET',
+    data: {
+     frameHeight: 320,
+      frameWidth: 290,
+    }
+  },
+    {
+      key: RED_DUMMY,
+      src: 'assets/images/artRed.png',
+      type: 'SPRITESHEET',
+      data: {
+       frameHeight: 320,
+        frameWidth: 290,
+      },
+    },
   {
     key: TRASH,
     src: 'assets/sounds/trash.wav',
