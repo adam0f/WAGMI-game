@@ -14,7 +14,7 @@ export class Player extends Phaser.GameObjects.Sprite {
   private rightKey: Phaser.Input.Keyboard.Key
   private upKey: Phaser.Input.Keyboard.Key
   private downKey: Phaser.Input.Keyboard.Key
-  private grabKey: Phaser.Input.Keyboard.Key
+  
 
   public speed = 200;
 
@@ -56,8 +56,7 @@ export class Player extends Phaser.GameObjects.Sprite {
     this.rightKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
     this.upKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
     this.downKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S)
-    this.grabKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL)
-    this.grabKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT)
+    
 
     this.scene.add.existing(this);
   }
