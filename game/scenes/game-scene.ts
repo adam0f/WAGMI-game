@@ -151,10 +151,10 @@ export class GameScene extends Phaser.Scene {
       runChildUpdate: true,
     })
 
-    const leftCounterTop: Customer = this.counterTops?.get();
+    const leftCounterTop: CounterTop = this.counterTops?.get();
     leftCounterTop.activate(0);
 
-    const rightCounterTop: Customer = this.counterTops?.get();
+    const rightCounterTop: CounterTop = this.counterTops?.get();
     rightCounterTop.activate(1);
 
     // Add a player sprite that can be moved around.

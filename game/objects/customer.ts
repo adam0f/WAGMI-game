@@ -27,10 +27,6 @@ export class Customer extends Phaser.GameObjects.Sprite {
 
         this.displayHeight = getGameHeight(this.scene) * 0.08
         this.displayWidth = getGameWidth(this.scene) * 0.0625
-
-        this.customerType = customerType;
-        this.customerRow = customerRow;
-        this.customerSpeed = customerSpeed;
     }
 
     public update = () => {
