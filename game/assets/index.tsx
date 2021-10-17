@@ -25,6 +25,8 @@ export const FOOD_DUMMY = 'dummyArt'
 export const TRASH = 'trash'
 export const YELLOW_DUMMY = 'dummyYellow'
 export const RED_DUMMY = 'dummyRed'
+export const CUSTOMER_COMMONROFL = 'commonRofl'
+export const MCWAGIE_COUNTER = 'mcwagieCounter'
 
 
 // Save all in game assets in the public folder
@@ -84,5 +86,23 @@ export const assets: Array<Asset | SpritesheetAsset> = [
     key: TRASH,
     src: 'assets/sounds/trash.wav',
     type: 'AUDIO',
+  },
+  {
+    key: CUSTOMER_COMMONROFL,
+    src: 'assets/images/commonRofl.png',
+    type: 'SPRITESHEET',
+    data: {
+      frameHeight: 256,
+      frameWidth: 230,
+    }
+  },
+  {
+    key: MCWAGIE_COUNTER,
+    src: 'assets/images/mcwagieCounter.png',
+    type: 'SPRITESHEET',
+    data: {
+      frameHeight: 128,
+      frameWidth: 350,
+    }
   },
 ];

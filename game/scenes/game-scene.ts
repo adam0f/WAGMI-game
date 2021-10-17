@@ -3,7 +3,7 @@ import {
 } from 'game/assets';
 import { AavegotchiGameObject } from 'types';
 import { getGameWidth, getGameHeight, getRelative } from '../helpers';
-import { Player, TopFood, BottomFood } from 'game/objects';
+import { Player, TopFood, BottomFood, Customer, CounterTop } from 'game/objects';
 
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
@@ -20,6 +20,8 @@ export class GameScene extends Phaser.Scene {
   private selectedGotchi?: AavegotchiGameObject;
   private topFoodLine?: Phaser.GameObjects.Group
   private bottomFoodLine?: Phaser.GameObjects.Group
+  private customers?: Phaser.GameObjects.Group
+  private counterTops?: Phaser.GameObjects.Group
   private grabKey: Phaser.Input.Keyboard.Key
   private score = 0;
   private scoreText?: Phaser.GameObjects.Text;
@@ -27,12 +29,12 @@ export class GameScene extends Phaser.Scene {
   // Sounds
   private back?: Phaser.Sound.BaseSound;
   private trash?: Phaser.Sound.BaseSound;
-  
+
 
   constructor() {
     super(sceneConfig);
 
-    
+
   }
 
   init = (data: { selectedGotchi: AavegotchiGameObject }): void => {
@@ -40,7 +42,7 @@ export class GameScene extends Phaser.Scene {
   };
 
   private fetchFoodTop = () => {
-    const foodType = 0 
+    const foodType = 0
     const foodSpeed = -1
 
     this.loadBeltTop(foodType, foodSpeed)
@@ -48,11 +50,11 @@ export class GameScene extends Phaser.Scene {
 
   private loadBeltTop = (foodType: number, foodSpeed: number): void => {
     const food: TopFood = this.topFoodLine?.get()
-    food.activate(foodType, foodSpeed)  
+    food.activate(foodType, foodSpeed)
   }
 
   private fetchFoodBottom = () => {
-    const foodType = 0 
+    const foodType = 0
     const foodSpeed = -1
 
     this.loadBeltBottom(foodType, foodSpeed)
@@ -60,7 +62,23 @@ export class GameScene extends Phaser.Scene {
 
   private loadBeltBottom = (foodType: number, foodSpeed: number): void => {
     const food: BottomFood = this.bottomFoodLine?.get()
-    food.activate(foodType, foodSpeed)  
+    food.activate(foodType, foodSpeed)
+  }
+
+  private fetchCustomer = () => {
+    console.log('fetchCustomer');
+    const customerType = 0
+    const customerRow = Math.floor(Math.random() * 3)
+
+    let speeds = [-1, 1];
+    const customerSpeed = speeds[Math.floor(Math.random() * speeds.length)]
+
+    this.loadCustomer(customerType, customerRow, customerSpeed)
+  }
+
+  private loadCustomer = (customerType: number, customerRow: number, customerSpeed: number): void => {
+    const customer: Customer = this.customers?.get()
+    customer.activate(customerType, customerRow, customerSpeed)
   }
 
 
@@ -89,9 +107,9 @@ export class GameScene extends Phaser.Scene {
     this.scoreText = this.add.text(getGameWidth(this) * 0.5, getGameHeight(this) * 0.15, this.score.toString(), { color: '#fff200' }).setFontSize(getRelative(70, this)).setOrigin(0.5).setDepth(1)
 
     this.topFoodLine = this.add.group({
-      maxSize: 500, 
+      maxSize: 500,
       classType: TopFood,
-      runChildUpdate: true, 
+      runChildUpdate: true,
     })
 
     this.time.addEvent({
@@ -102,9 +120,9 @@ export class GameScene extends Phaser.Scene {
     })
 
     this.bottomFoodLine = this.add.group({
-      maxSize: 300, 
-      classType: BottomFood, 
-      runChildUpdate: true, 
+      maxSize: 300,
+      classType: BottomFood,
+      runChildUpdate: true,
     })
 
     this.time.addEvent({
@@ -114,8 +132,30 @@ export class GameScene extends Phaser.Scene {
       loop: true
     })
 
-    
+    this.customers = this.add.group({
+      maxSize: 500,
+      classType: Customer,
+      runChildUpdate: true,
+    })
 
+    this.time.addEvent({
+      delay: 5000,
+      callback: this.fetchCustomer,
+      callbackScope: true,
+      loop: true
+    })
+
+    this.counterTops = this.add.group({
+      maxSize: 500,
+      classType: CounterTop,
+      runChildUpdate: true,
+    })
+
+    const leftCounterTop: Customer = this.counterTops?.get();
+    leftCounterTop.activate(0);
+
+    const rightCounterTop: Customer = this.counterTops?.get();
+    rightCounterTop.activate(1);
 
     // Add a player sprite that can be moved around.
     this.player = new Player({
@@ -131,14 +171,19 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.collider(leftWall, this.player);
     this.physics.add.collider(rightWall, this.player);
     this.physics.add.collider(ceiling, this.player);
+
+    this.physics.add.collider(this.player, this.counterTops);
+    this.physics.add.collider(this.customers, this.counterTops);
+    this.physics.add.collider(this.customers, this.customers);
+
     this.physics.add.overlap(this.player, this.topFoodLine, (_, TopFood) => { this.foodInteractTop(TopFood) });
-    this.physics.add.overlap(this.player, this.bottomFoodLine, (_, BottomFood) => { this.foodInteractBottom(BottomFood) });    
+    this.physics.add.overlap(this.player, this.bottomFoodLine, (_, BottomFood) => { this.foodInteractBottom(BottomFood) });
   }
 
   private foodInteractTop(TopFood) {
     if (this.grabKey.isDown) {
-      TopFood.destroy()      
-      this.score += 1 
+      TopFood.destroy()
+      this.score += 1
       this.scoreText?.setText(this.score.toString())
       this.trash?.play();
     }
@@ -146,8 +191,8 @@ export class GameScene extends Phaser.Scene {
 
   private foodInteractBottom(BottomFood) {
     if (this.grabKey.isDown) {
-      BottomFood.destroy()      
-      this.score += 1 
+      BottomFood.destroy()
+      this.score += 1
       this.scoreText?.setText(this.score.toString())
       this.trash?.play();
     }
@@ -169,6 +214,6 @@ export class GameScene extends Phaser.Scene {
     // Every frame, we update the player
     this.player?.update();
 
-    
+
   }
 }
