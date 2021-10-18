@@ -4,7 +4,7 @@ import {
 import { AavegotchiGameObject } from 'types';
 import { getGameWidth, getGameHeight, getRelative } from '../helpers';
 import { Player, TopFood, BottomFood, Customer, CounterTop } from 'game/objects';
-
+import eventsCenter from 'game/objects/eventsCenter';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -25,6 +25,7 @@ export class GameScene extends Phaser.Scene {
   private grabKey: Phaser.Input.Keyboard.Key
   private score = 0;
   private scoreText?: Phaser.GameObjects.Text;
+  private customerCounterCollider;
 
   // Sounds
   private back?: Phaser.Sound.BaseSound;
@@ -173,11 +174,13 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.collider(ceiling, this.player);
 
     this.physics.add.collider(this.player, this.counterTops);
-    this.physics.add.collider(this.customers, this.counterTops);
+    this.customerCounterCollider = this.physics.add.collider(this.customers, this.counterTops, (_, CounterTop) => { (_ as Customer).deskCollision(); });
     this.physics.add.collider(this.customers, this.customers);
 
     this.physics.add.overlap(this.player, this.topFoodLine, (_, TopFood) => { this.foodInteractTop(TopFood) });
     this.physics.add.overlap(this.player, this.bottomFoodLine, (_, BottomFood) => { this.foodInteractBottom(BottomFood) });
+
+    eventsCenter.on('gameOver', this.gameOver, this);
   }
 
   private foodInteractTop(TopFood) {
@@ -215,5 +218,11 @@ export class GameScene extends Phaser.Scene {
     this.player?.update();
 
 
+  }
+
+  public gameOver(): void {
+    console.log('game over');
+    eventsCenter.off('gameOver');
+    this.scene.restart();
   }
 }
