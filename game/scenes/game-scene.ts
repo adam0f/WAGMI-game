@@ -25,6 +25,7 @@ export class GameScene extends Phaser.Scene {
   private grabKey: Phaser.Input.Keyboard.Key
   private score = 0;
   private scoreText?: Phaser.GameObjects.Text;
+  private customerCounterCollider;
 
   // Sounds
   private back?: Phaser.Sound.BaseSound;
@@ -173,7 +174,7 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.collider(ceiling, this.player);
 
     this.physics.add.collider(this.player, this.counterTops);
-    this.customerCounterCollider = this.physics.add.collider(this.customers, this.counterTops, (_, CounterTop) => { _.deskCollision(this.customerCounterCollider); });
+    this.customerCounterCollider = this.physics.add.collider(this.customers, this.counterTops, (_, CounterTop) => { (_ as Customer).deskCollision(); });
     this.physics.add.collider(this.customers, this.customers);
 
     this.physics.add.overlap(this.player, this.topFoodLine, (_, TopFood) => { this.foodInteractTop(TopFood) });

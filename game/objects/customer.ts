@@ -56,7 +56,7 @@ export class Customer extends Phaser.GameObjects.Sprite {
         }
     }
 
-    public deskCollision = (customerCounterCollider) => {
+    public deskCollision = () => {
       // console.log('deskCollision', this.customerRow, this.customerSpeed);
       if (this.customerStatus == CustomerStatus.WalkingToCounter) {
         (this.body as Phaser.Physics.Arcade.Body).setVelocityX(0)
