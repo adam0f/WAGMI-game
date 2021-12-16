@@ -27,6 +27,9 @@ export const YELLOW_DUMMY = 'dummyYellow'
 export const RED_DUMMY = 'dummyRed'
 export const CUSTOMER_COMMONROFL = 'commonRofl'
 export const MCWAGIE_COUNTER = 'mcwagieCounter'
+export const FRYER = 'fryer'
+export const PREP = 'prep'
+export const DRINK = 'drink'
 
 
 // Save all in game assets in the public folder
@@ -52,7 +55,7 @@ export const assets: Array<Asset | SpritesheetAsset> = [
     type: 'SPRITESHEET',
     data: {
       frameHeight: 775,
-      frameWidth: 4800,
+      frameWidth: 9600,
     }
   },
   {
@@ -103,6 +106,33 @@ export const assets: Array<Asset | SpritesheetAsset> = [
     data: {
       frameHeight: 128,
       frameWidth: 350,
+    }
+  },
+  {
+    key: FRYER,
+    src: 'assets/images/fryer.png',
+    type: 'SPRITESHEET',
+    data: {
+     frameHeight: 1150,
+      frameWidth: 1280,
+    }
+  },
+  {
+    key: PREP,
+    src: 'assets/images/prep.png',
+    type: 'SPRITESHEET',
+    data: {
+     frameHeight: 1120,
+      frameWidth: 1280,
+    }
+  },
+  {
+    key: DRINK,
+    src: 'assets/images/drink.png',
+    type: 'SPRITESHEET',
+    data: {
+     frameHeight: 1130,
+      frameWidth: 740,
     }
   },
 ];

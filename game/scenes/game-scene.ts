@@ -1,9 +1,9 @@
 import {
-  LEFT_CHEVRON, BG, CLICK, LOWER_BELT, TRASH
+  LEFT_CHEVRON, BG, CLICK, LOWER_BELT, TRASH, DRINK, FRYER, PREP
 } from 'game/assets';
 import { AavegotchiGameObject } from 'types';
 import { getGameWidth, getGameHeight, getRelative } from '../helpers';
-import { Player, TopFood, BottomFood, Customer, CounterTop } from 'game/objects';
+import { Player, FoodDummy, RedFood, YellowFood, Customer, CounterTop, } from 'game/objects';
 import eventsCenter from 'game/objects/eventsCenter';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
@@ -18,14 +18,17 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 export class GameScene extends Phaser.Scene {
   private player?: Player;
   private selectedGotchi?: AavegotchiGameObject;
-  private topFoodLine?: Phaser.GameObjects.Group
-  private bottomFoodLine?: Phaser.GameObjects.Group
+  //private topFoodLine?: Phaser.GameObjects.Group
+  private FoodDummyLine?: Phaser.GameObjects.Group
+  private RedFoodLine?: Phaser.GameObjects.Group
+  private YellowFoodLine?: Phaser.GameObjects.Group
   private customers?: Phaser.GameObjects.Group
   private counterTops?: Phaser.GameObjects.Group
   private grabKey: Phaser.Input.Keyboard.Key
   private score = 0;
   private scoreText?: Phaser.GameObjects.Text;
   private customerCounterCollider;
+ // private drinkStations?: Phaser.GameObjects.Group
 
   // Sounds
   private back?: Phaser.Sound.BaseSound;
@@ -55,15 +58,23 @@ export class GameScene extends Phaser.Scene {
   // }
 
   private fetchFoodBottom = () => {
-    const foodType = 0
-    const foodSpeed = -1
-
+    const foodType = Math.floor(Math.random() * 3)
+    const foodSpeed = -0.5
     this.loadBeltBottom(foodType, foodSpeed)
   }
 
   private loadBeltBottom = (foodType: number, foodSpeed: number): void => {
-    const food: BottomFood = this.bottomFoodLine?.get()
-    food.activate(foodType, foodSpeed)
+
+    if (foodType === 0) {
+      const food: FoodDummy = this.FoodDummyLine?.get()
+    food.activate(foodSpeed)
+    } else if (foodType === 1) {
+      const food: RedFood = this.RedFoodLine?.get()
+    food.activate(foodSpeed)
+    } else if (foodType === 2) {
+      const food: YellowFood = this.YellowFoodLine?.get()
+    food.activate(foodSpeed)
+    }    
   }
 
   private fetchCustomer = () => {
@@ -90,10 +101,19 @@ export class GameScene extends Phaser.Scene {
     this.trash = this.sound.add(TRASH, { loop: false });
     this.createBackButton();
 
-    const lowerBelt = this.add.sprite(getGameWidth(this) * 0.5 , getGameHeight(this) * 0.82 + getGameHeight(this) * 0.1875, LOWER_BELT).setDisplaySize(getGameWidth(this) *1.5, getGameHeight(this) * 0.4).setVisible(true).setDepth(0.25)
+    const drinkStation = this.add.sprite(getGameWidth(this) * 0.25, getGameHeight(this) * 0.375, DRINK).setDisplaySize(getGameWidth(this) * 0.09375, getGameHeight(this) * 0.25).setVisible(true)
+    this.physics.add.existing(drinkStation, true)
+
+    const fryerStation = this.add.sprite(getGameWidth(this) * 0.5, getGameHeight(this) * 0.375, FRYER).setDisplaySize(getGameWidth(this) * 0.125, getGameHeight(this) * 0.25).setVisible(true)
+    this.physics.add.existing(fryerStation, true)
+
+    const prepStation = this.add.sprite(getGameWidth(this) * 0.75, getGameHeight(this) * 0.375, PREP).setDisplaySize(getGameWidth(this) * 0.125, getGameHeight(this) * 0.25).setVisible(true)
+    this.physics.add.existing(prepStation, true)
+
+    const lowerBelt = this.add.sprite(getGameWidth(this) * 0.5 , getGameHeight(this) * 0.9375, LOWER_BELT).setDisplaySize(getGameWidth(this) * 1.5, getGameHeight(this) * 0.2).setVisible(true).setDepth(0.25)
     this.physics.add.existing(lowerBelt, true)
 
-    const floor = this.add.rectangle(0, getGameHeight(this) * 0.9).setDisplaySize(getGameWidth(this), 50).setOrigin(0, 0)
+    const floor = this.add.rectangle(0, getGameHeight(this) * 0.875).setDisplaySize(getGameWidth(this), 50).setOrigin(0, 0)
     this.physics.add.existing(floor, true)
 
     const leftWall = this.add.rectangle(-100, -getGameHeight(this) * 40, 0x000000).setDisplaySize(50, getGameHeight(this) * 50,).setOrigin(0, 0)
@@ -120,9 +140,21 @@ export class GameScene extends Phaser.Scene {
     //   loop: true
     // })
 
-    this.bottomFoodLine = this.add.group({
+    this.FoodDummyLine = this.add.group({
       maxSize: 300,
-      classType: BottomFood,
+      classType: FoodDummy, 
+      runChildUpdate: true,
+    })
+
+    this.RedFoodLine = this.add.group({
+      maxSize: 300,
+      classType: RedFood, 
+      runChildUpdate: true,
+    })
+
+    this.YellowFoodLine = this.add.group({
+      maxSize: 300,
+      classType: YellowFood, 
       runChildUpdate: true,
     })
 
@@ -158,6 +190,16 @@ export class GameScene extends Phaser.Scene {
     const rightCounterTop: CounterTop = this.counterTops?.get();
     rightCounterTop.activate(1);
 
+    // this.drinkStations = this.add.group({
+    //   maxSize: 500,
+    //   classType: DrinkStation,
+    //   runChildUpdate: true,
+    // })
+
+    // const Drink: DrinkStation = this.drinkStations?.get();
+    // Drink.activate(0);
+
+
     // Add a player sprite that can be moved around.
     this.player = new Player({
       scene: this,
@@ -172,13 +214,16 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.collider(leftWall, this.player);
     this.physics.add.collider(rightWall, this.player);
     this.physics.add.collider(ceiling, this.player);
+    this.physics.add.collider(drinkStation, this.player);
+    this.physics.add.collider(fryerStation, this.player);
+    this.physics.add.collider(prepStation, this.player);
 
     this.physics.add.collider(this.player, this.counterTops);
     this.customerCounterCollider = this.physics.add.collider(this.customers, this.counterTops, (_, CounterTop) => { (_ as Customer).deskCollision(); });
     this.physics.add.collider(this.customers, this.customers);
 
    // this.physics.add.overlap(this.player, this.topFoodLine, (_, TopFood) => { this.foodInteractTop(TopFood) });
-    this.physics.add.overlap(this.player, this.bottomFoodLine, (_, BottomFood) => { this.foodInteractBottom(BottomFood) });
+   // this.physics.add.overlap(this.player, this.bottomFoodLine, (_, BottomFood) => { this.foodInteractBottom(BottomFood) });
 
     eventsCenter.on('gameOver', this.gameOver, this);
   }

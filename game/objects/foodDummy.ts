@@ -1,13 +1,13 @@
 import { getGameHeight, getGameWidth } from "game/helpers";
 import { FOOD_DUMMY } from "game/assets";
 
-export class BottomFood extends Phaser.GameObjects.Sprite {
+export class FoodDummy extends Phaser.GameObjects.Sprite {
     constructor(scene: Phaser.Scene) {
         super(scene, -100, -100, FOOD_DUMMY, 0)
         this.setOrigin(0, 0)
     }
 
-    public activate = (foodType: number, foodSpeed: number) => {
+    public activate = (foodSpeed: number) => {
         this.scene.physics.world.enable(this);
 
         (this.body as Phaser.Physics.Arcade.Body).setVelocityX(foodSpeed * getGameWidth(this.scene) * 0.3)
