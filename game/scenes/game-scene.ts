@@ -42,17 +42,17 @@ export class GameScene extends Phaser.Scene {
     this.selectedGotchi = data.selectedGotchi;
   };
 
-  private fetchFoodTop = () => {
-    const foodType = 0
-    const foodSpeed = -1
+  // private fetchFoodTop = () => {
+  //   const foodType = 0
+  //   const foodSpeed = -1
 
-    this.loadBeltTop(foodType, foodSpeed)
-  }
+  //   this.loadBeltTop(foodType, foodSpeed)
+  // }
 
-  private loadBeltTop = (foodType: number, foodSpeed: number): void => {
-    const food: TopFood = this.topFoodLine?.get()
-    food.activate(foodType, foodSpeed)
-  }
+  // private loadBeltTop = (foodType: number, foodSpeed: number): void => {
+  //   const food: TopFood = this.topFoodLine?.get()
+  //   food.activate(foodType, foodSpeed)
+  // }
 
   private fetchFoodBottom = () => {
     const foodType = 0
@@ -107,18 +107,18 @@ export class GameScene extends Phaser.Scene {
 
     this.scoreText = this.add.text(getGameWidth(this) * 0.5, getGameHeight(this) * 0.15, this.score.toString(), { color: '#fff200' }).setFontSize(getRelative(70, this)).setOrigin(0.5).setDepth(1)
 
-    this.topFoodLine = this.add.group({
-      maxSize: 500,
-      classType: TopFood,
-      runChildUpdate: true,
-    })
+    // this.topFoodLine = this.add.group({
+    //   maxSize: 500,
+    //   classType: TopFood,
+    //   runChildUpdate: true,
+    // })
 
-    this.time.addEvent({
-      delay: 1100,
-      callback: this.fetchFoodTop,
-      callbackScope: true,
-      loop: true
-    })
+    // this.time.addEvent({
+    //   delay: 1100,
+    //   callback: this.fetchFoodTop,
+    //   callbackScope: true,
+    //   loop: true
+    // })
 
     this.bottomFoodLine = this.add.group({
       maxSize: 300,
@@ -177,20 +177,20 @@ export class GameScene extends Phaser.Scene {
     this.customerCounterCollider = this.physics.add.collider(this.customers, this.counterTops, (_, CounterTop) => { (_ as Customer).deskCollision(); });
     this.physics.add.collider(this.customers, this.customers);
 
-    this.physics.add.overlap(this.player, this.topFoodLine, (_, TopFood) => { this.foodInteractTop(TopFood) });
+   // this.physics.add.overlap(this.player, this.topFoodLine, (_, TopFood) => { this.foodInteractTop(TopFood) });
     this.physics.add.overlap(this.player, this.bottomFoodLine, (_, BottomFood) => { this.foodInteractBottom(BottomFood) });
 
     eventsCenter.on('gameOver', this.gameOver, this);
   }
 
-  private foodInteractTop(TopFood) {
-    if (this.grabKey.isDown) {
-      TopFood.destroy()
-      this.score += 1
-      this.scoreText?.setText(this.score.toString())
-      this.trash?.play();
-    }
-  }
+  // private foodInteractTop(TopFood) {
+  //   if (this.grabKey.isDown) {
+  //     TopFood.destroy()
+  //     this.score += 1
+  //     this.scoreText?.setText(this.score.toString())
+  //     this.trash?.play();
+  //   }
+  // }
 
   private foodInteractBottom(BottomFood) {
     if (this.grabKey.isDown) {

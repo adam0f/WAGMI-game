@@ -23,8 +23,8 @@ export class Player extends Phaser.GameObjects.Sprite {
 
     // sprite
     this.setOrigin(0, 0);
-    this.displayWidth = getGameWidth(this.scene) * 0.125
-    this.displayHeight = getGameWidth(this.scene) * 0.125
+    this.displayWidth = getGameWidth(this.scene) * 0.0625
+    this.displayHeight = getGameWidth(this.scene) * 0.0625
 
     // Add animations
     this.anims.create({
@@ -48,7 +48,7 @@ export class Player extends Phaser.GameObjects.Sprite {
 
     // physics
     this.scene.physics.world.enable(this);
-    (this.body as Phaser.Physics.Arcade.Body).setSize(getGameWidth(this.scene) * 0.06, getGameWidth(this.scene) * 0.09) 
+    (this.body as Phaser.Physics.Arcade.Body).setSize(getGameWidth(this.scene) * 0.03, getGameWidth(this.scene) * 0.05) 
 
     // input
     this.cursorKeys = scene.input.keyboard.createCursorKeys();
